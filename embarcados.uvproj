@@ -416,9 +416,9 @@
               <FilePath>.\lpc2103.h</FilePath>
             </File>
             <File>
-              <FileName>semaforo_embarcados.c</FileName>
+              <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\semaforo_embarcados.c</FilePath>
+              <FilePath>.\main.c</FilePath>
             </File>
           </Files>
         </Group>
