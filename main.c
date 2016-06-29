@@ -35,12 +35,10 @@ void extintfalling_isr() __irq //INTERRUPÇÃO
 		
 		aux_contador = T0TC;
 		distancia = (int)(((double)aux_contador/58)/15);
-			//*start_measurement = distancia;
-			i = 400;
-			//for(i = 0; i < 8; i++){
-				U0THR = distancia;
-				while(!(U0LSR & TEMT)){}
-	//		}
+	
+		U0THR = distancia;
+		while(!(U0LSR & TEMT)){}
+
 		
 		T0TCR = 0x02; //RESET TIMER
 		T0TCR = 0x00; //DISABLE TIMER
@@ -71,6 +69,7 @@ void extint_falling_init(){
 
 }
 
+
 void timer0_init(){
 	
 	T0CTCR = 0x00;
@@ -84,8 +83,6 @@ int main(){
 	int count = 0;
 	
 	//uart
-	char *start_measurement = "S\x0D\x0A";
-	int i = 0;
 	
 	IODIR = TRIGGER | PIN_23 | PIN_22; //EDEREÇO 
 	
