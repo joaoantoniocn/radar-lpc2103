@@ -26,14 +26,17 @@ fopen(s);           % abre a porta serial
 t=1;
 disp('Running');
 y=0;
-x = 0;
+
 while(t < 100)  % numero de vezes que quero ler da serial
     a =fread(s); % lendo os dados da serial
     
     y =[y a];       % salvando os valores de `a` no array `y`
-    %     x = [x t];
     
-    % plotando o grafico
+    % mantem somente os 10 ultimos valores recebidos
+    if length(y) > 10
+       y(1) = []; 
+    end    
+    
     plot(y,'--go',...
         'LineWidth',2,...
         'MarkerSize',10,...
@@ -43,7 +46,7 @@ while(t < 100)  % numero de vezes que quero ler da serial
     grid on;
     
     % printando o valor recebido
-    disp(num2str(a));
+    disp(a);
     hold on;
     t=t+1;
     a=0;  % limpando valor de `a`
