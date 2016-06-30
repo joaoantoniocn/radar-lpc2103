@@ -1,60 +1,53 @@
 %run('clean');
 clear all;
 close all;
- 
-s = serial('COM1'); %assigns the object s to serial port
- 
-set(s, 'InputBufferSize', 256); %number of bytes in inout buffer
+
+s = serial('COM1'); % instancia a porta serial COM1
+
+set(s, 'InputBufferSize', 256); % numero de bytes no buffer
 set(s, 'FlowControl', 'hardware');
-set(s, 'BaudRate', 9600);
+set(s, 'BaudRate', 9600); % taxa de transmissao
 set(s, 'Parity', 'none');
 set(s, 'DataBits', 8);
 set(s, 'StopBit', 1);
-set(s, 'Timeout',4);
+set(s, 'Timeout',4); % tempo que vai esperar ate olhar os dados da porta serial de novo
 %clc;
- 
+
+% printando configuracao da porta serial
 disp(get(s,'Name'));
 prop(1)=(get(s,'BaudRate'));
 prop(2)=(get(s,'DataBits'));
-prop(3)=(get(s, 'StopBit'));
+prop(3)=(get(s, 'Timeout'));
 prop(4)=(get(s, 'InputBufferSize'));
- 
-disp(['Port Setup Done!!',num2str(prop)]);
- 
-fopen(s);           %opens the serial port
+
+disp(['Port Setup Done!! ',num2str(prop)]);
+
+fopen(s);           % abre a porta serial
 t=1;
 disp('Running');
 y=0;
 x = 0;
-while(t < 100)  %Runs for 200 cycles - if you cant see the symbol, it is "less than" sign. so while (t less than 200)
-    a =fread(s); %reads the data from the serial port and stores it to the matrix a
-%    a=max(a);  % in this particular example, I'm plotting the maximum value of the 256B input buffer
-%  
-%     disp(a);
-%     if a == [] 
-%        disp('fudeu');
-%        a = 0;
-%     end    
-     y =[y a];       % Merging the value to an array, this is not very computationaly effective, as the array size is dynamic.
-%     x = [x t];    
-%                  %Consider pre allocation the size of the array to avoid this. But beware, You might loose some important
-%                   %data at the end!
-%  
+while(t < 100)  % numero de vezes que quero ler da serial
+    a =fread(s); % lendo os dados da serial
     
-%     stem(x, y, 'filled');
+    y =[y a];       % salvando os valores de `a` no array `y`
+    %     x = [x t];
+    
+    % plotando o grafico
     plot(y,'--go',...
-    'LineWidth',2,...
-    'MarkerSize',10,...
-    'MarkerEdgeColor','b',...
-    'MarkerFaceColor',[0.5,0.5,0.5]);
+        'LineWidth',2,...
+        'MarkerSize',10,...
+        'MarkerEdgeColor','b',...
+        'MarkerFaceColor',[0.5,0.5,0.5]);
     axis auto;
-     grid on;
- 
+    grid on;
+    
+    % printando o valor recebido
     disp(num2str(a));
     hold on;
-   t=t+1;
-   a=0;  %Clear the buffer
+    t=t+1;
+    a=0;  % limpando valor de `a`
     drawnow;
 end
- 
-fclose(s); %close the serial port
+
+fclose(s); % fechando a porta serial
